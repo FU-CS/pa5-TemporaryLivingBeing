@@ -51,9 +51,136 @@ interface ArrayBasedBinaryTree {
 }
 
 // // Uncomment the following code to implement the BinaryTreeArray class
-// public class BinaryTreeArray implements ArrayBasedBinaryTree{
+public class BinaryTreeArray implements ArrayBasedBinaryTree{
+    int[] data;
+    private int maxCapacity;
+    private int size = 0;
+     public BinaryTreeArray(int cap){
+         maxCapacity = cap;
+         this.data = new int[this.maxCapacity];
+     }
+     public void insert(int element){
+        if (this.size >= maxCapacity){
+            return;
+        }
+        else{
+            this.data[this.size] = element;
+            this.size++;
+        }
+     }
 
-//     public static void main(String[] args){
+     public void print(){
+         for (int i = 0; i < data.length; i++){
+             int j = i;
+             while (j < size && j < i+2){
+                 System.out.print(data[i]);
+                 System.out.println(data[i+1]);
+                 System.out.println(data[i+2]);
+             }
+         }
+     }
 
-//     }   
-// }
+     public int remove() {
+         // TODO Auto-generated method stub
+         throw new UnsupportedOperationException("Unimplemented method 'remove'");
+     }
+
+    public String levelOrder(){
+        String result = "";
+
+        for (int i = 0; i < this.size; i++){
+            result += this.data[i] + " ";
+        }
+        result = result.trim();
+        return result;
+    }
+
+    /**
+     * Returns the tree in in-order
+     */
+    public String inOrder(){
+        String result = inOrderHelper(0);
+        result = result.trim();
+        return result;
+    }
+
+    private String inOrderHelper(int i){
+        if (i >= this.size){
+            return "";
+        }
+
+        String result = this.inOrderHelper(2*i + 1) + " ";
+        result += this.data[i];
+        result += this.inOrderHelper(2*i + 2);
+
+        return result; 
+    }
+
+    /**
+     * Returns the tree in pre-order
+     */
+    public String preOrder(){
+        String result = preOrderHelper(0);
+        result = result.trim();
+        return result;
+    }
+
+    private String preOrderHelper(int i){
+        if (i >= this.size){
+            return "";
+        }
+        String result = this.data[i]  + " ";
+        result += this.preOrderHelper(2*i + 1);
+        result += this.preOrderHelper(2*i + 2);
+        return result; 
+    }
+
+    /**
+     * Returns the tree in post-order
+     */
+    public String postOrder(){
+        String result = postOrderHelper(0);
+        result = result.trim();
+        return result;
+    }
+
+    private String postOrderHelper(int i){
+        if (i >= this.size){
+            return "";
+        }
+        String result = this.postOrderHelper(2*i + 1);
+        result += this.postOrderHelper(2*i + 2) + " ";
+        result += this.data[i];
+
+        return result;
+    }
+
+    /**
+     * Return the length of the longest path in the tree
+     */
+    public int longestPath(){
+        return longestPathHelper(0, 0);
+    }
+
+    private int longestPathHelper(int i, int curr){
+        if (i >= this.size){
+            return curr;
+        }
+        curr += 1;
+        return longestPathHelper(2*i+1, curr); 
+    }
+
+    /**
+     * Delete an element from the tree
+     * Ensure that the tree remains a complete binary tree
+     */
+    public void delete(int element){
+        int i = 0;
+        while (this.data[i] != element){
+            i+= 1;
+        }
+        this.size -= 1;
+        this.data[i] = this.data[this.size];
+    }
+
+ }
